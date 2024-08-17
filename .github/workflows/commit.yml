@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.LOGIN_TOKEN }}
 
       - name: Set up Git
         run: |
@@ -33,7 +33,7 @@ jobs:
             6) NUM_COMMITS=1 ;; # Saturday
             7) NUM_COMMITS=1 ;; # Sunday
           esac
-          echo "NUM_COMMITS=$NUM_COMMITS" >> $GITHUB_ENV
+          echo "NUM_COMMITS=$NUM_COMMITS" >> $LOGIN_ENV
 
       - name: Create and Commit Files
         run: |
@@ -49,4 +49,4 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.LOGIN_TOKEN }}
