@@ -1,0 +1,52 @@
+name: Scheduled Daily Commits
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight
+  workflow_dispatch: # Enables manual triggering of the workflow
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'su-resh'
+          git config --global user.email 'sureshsubedi3994@gmail.com'
+      
+      - name: Determine Number of Commits
+        id: determine_commits
+        run: |
+          DAY_OF_WEEK=$(date +%u)
+          case $DAY_OF_WEEK in
+            1) NUM_COMMITS=1 ;; # Monday
+            2) NUM_COMMITS=1 ;; # Tuesday
+            3) NUM_COMMITS=1 ;; # Wednesday
+            4) NUM_COMMITS=1 ;; # Thursday
+            5) NUM_COMMITS=1 ;; # Friday
+            6) NUM_COMMITS=1 ;; # Saturday
+            7) NUM_COMMITS=1 ;; # Sunday
+          esac
+          echo "NUM_COMMITS=$NUM_COMMITS" >> $GITHUB_ENV
+
+      - name: Create and Commit Files
+        run: |
+          for i in $(seq 1 $NUM_COMMITS)
+          do
+            echo "Commit number $i on $(date)" > commit.txt
+            git add commit.txt
+            git commit -m "Auto commit $i on $(date)"
+          done
+        env:
+          NUM_COMMITS: ${{ env.NUM_COMMITS }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
