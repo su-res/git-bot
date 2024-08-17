@@ -17,8 +17,8 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.name 'su-resh'
-          git config --global user.email 'sureshsubedi3994@gmail.com'
+          git config --global user.name 'su-res'
+          git config --global user.email 'suresh.subedi.3000@gmail.com'
       
       - name: Determine Number of Commits
         id: determine_commits
@@ -33,7 +33,7 @@ jobs:
             6) NUM_COMMITS=1 ;; # Saturday
             7) NUM_COMMITS=0 ;; # Sunday
           esac
-          echo "NUM_COMMITS=$NUM_COMMITS" >> $LOGIN_ENV
+          echo "NUM_COMMITS=$NUM_COMMITS" >> $GITHUB_ENV
 
       - name: Create and Commit Files
         run: |
