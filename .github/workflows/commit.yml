@@ -1,4 +1,4 @@
-name: Scheduled Daily Commits
+name: Scheduled Daily Commit
 
 on:
   schedule:
@@ -19,32 +19,12 @@ jobs:
         run: |
           git config --global user.name 'su-res'
           git config --global user.email 'suresh.subedi.3000@gmail.com'
-      
-      - name: Determine Number of Commits
-        id: determine_commits
-        run: |
-          DAY_OF_WEEK=$(date +%u)
-          case $DAY_OF_WEEK in
-            1) NUM_COMMITS=5 ;; # Monday
-            2) NUM_COMMITS=4 ;; # Tuesday
-            3) NUM_COMMITS=2 ;; # Wednesday
-            4) NUM_COMMITS=1 ;; # Thursday
-            5) NUM_COMMITS=3 ;; # Friday
-            6) NUM_COMMITS=1 ;; # Saturday
-            7) NUM_COMMITS=0 ;; # Sunday
-          esac
-          echo "NUM_COMMITS=$NUM_COMMITS" >> $GITHUB_ENV
 
-      - name: Create and Commit Files
+      - name: Create and Commit File
         run: |
-          for i in $(seq 1 $NUM_COMMITS)
-          do
-            echo "Commit number $i on $(date)" > commit.txt
-            git add commit.txt
-            git commit -m "Auto commit $i on $(date)"
-          done
-        env:
-          NUM_COMMITS: ${{ env.NUM_COMMITS }}
+          echo "Daily commit on $(date)" > commit.txt
+          git add commit.txt
+          git commit -m "Auto commit on $(date)"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
